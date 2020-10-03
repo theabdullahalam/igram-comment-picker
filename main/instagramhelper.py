@@ -1,3 +1,9 @@
+'''
+    Author: Abdullah Alam
+    Creationg Date: 2020-10-01
+    What: A helper class for dealing with the igramscraper module
+'''
+
 from igramscraper.instagram import Instagram
 import random
 
@@ -28,4 +34,78 @@ class InstagramHelper:
         # print(random_comment.owner)
 
         return random_comment.owner.external_url
+
+    # HELPER STUFF
+    class Comment:
+        def __init__(self, textv):
+            self.text = textv
+
+    def get_mock_comments(self):
+        comments = [
+            self.Comment("This an amazing comment #wow #nice"),
+            self.Comment("Crazy stuff buddy"),
+            self.Comment("I am enjoying this Canon camera #nikon"),
+            self.Comment("I am enjoying this Canon camera #canon"),
+            self.Comment("Life is great!"),
+            self.Comment("Kya bhenchod giveaway karte rehte"),
+        ]
+
+        return comments
+        
+            
+
+
+    def get_random_comment(self, url=None, filter_string=None):
+        if url is None:
+            return None
+            # pass
+
+        # REMOVE IGSHID
+        if '?igshid=' in url:
+            url = str(url).split('?igshid=')[0]
+        
+        # GET MEDIA ID
+        media = self.instagram.get_media_by_url(url)
+        media_id = media.identifier
+
+        # GET COMMENTS
+        comments = self.instagram.get_media_comments_by_id(media_id, 10000)
+        all_comment_objs = comments['comments']
+        # all_comment_objs = self.get_mock_comments()
+        valid_comments = []
+
+        # FILTER
+        # filter is assumed to be a comma seperated list of filters
+        # they can be hashtags as well
+        if filter is not None and filter != '':            
+            filters = filter_string.split(', ')
+            
+            for comment in all_comment_objs:
+                valid_comment = True
+
+                for f in filters:
+                    if str(f).lower() not in str(comment.text).lower():
+                        valid_comment = False
+
+                if valid_comment:
+                    valid_comments.append(comment)
+
+        else:
+            valid_comments = all_comment_objs
+
+
+        
+        # SELECT random_comment
+        random_index = random.randint(0, len(valid_comments)-1)
+        random_comment = valid_comments[random_index]
+        print(random_comment.text)
+
+
+        return "Executed"
+
+            
+
+
+
+
 

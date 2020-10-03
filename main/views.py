@@ -18,11 +18,13 @@ def index(request):
 def pickwinner(request):
 
     post_link = request.POST['postlink']
+    filter_string = request.POST['filter']
 
     ig_helper  = InstagramHelper()
-    ig_helper.test(post_link)
+    returnthis = ig_helper.get_random_comment(post_link, filter_string)
 
-    returnthis = ig_helper.test(post_link)
+    if returnthis is None:
+        returnthis = "NOURL"
 
     d = {
         'test': returnthis
