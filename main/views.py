@@ -19,9 +19,10 @@ def pickwinner(request):
 
     post_link = request.POST['postlink']
     filter_string = request.POST['filter']
+    req_mentions = 1;
 
     ig_helper  = InstagramHelper()
-    returnthis = ig_helper.get_random_comment(post_link, filter_string)
+    returnthis = ig_helper.get_random_comment(url=post_link, filter_string=filter_string, req_mentions=req_mentions)
 
     if returnthis is None:
         returnthis = "NOURL"
