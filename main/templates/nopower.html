@@ -1,0 +1,28 @@
+{% extends 'skeleton.html' %} {% load static %} 
+{% block title %}Page Title{%endblock %} 
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}" />
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    function pick_winner() {
+        console.log("Clicked");
+        var jqxhr = $.post("http://localhost:8000/pickwinner", $( "#theform" ).serialize(), function (d) {
+            console.log(d["test"]);
+
+            // let the_string = "CPU: " + d['cpu_temp'] + "° C";
+            // $("#cpu-temp-section").text(the_string);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown);
+        });
+    }
+</script>
+
+{% endblock %} 
+{% block body %}
+<div id="content">
+    
+    <h1>You have no power here</h1>
+    
+</div>
+{% endblock %}

@@ -17,17 +17,43 @@ def index(request):
 
 def pickwinner(request):
 
-    post_link = request.POST['postlink']
-    filter_string = request.POST['filter']
-    req_mentions = 1;
+    if request.method == 'POST':    
 
-    ig_helper  = InstagramHelper()
-    returnthis = ig_helper.get_random_comment(url=post_link, filter_string=filter_string, req_mentions=req_mentions)
+        print(request.POST)
+        # print(request.method)
 
-    if returnthis is None:
-        returnthis = "NOURL"
 
-    d = {
-        'test': returnthis
-    }
-    return JsonResponse(d)
+        # SANITIZE EVERYTHING
+        returnthis = ''
+        errors = []
+
+        # INSTA POST URL
+        post_link = request.POST['postlink']
+        if post_link == '':
+            errors.append('NOURL')
+
+        # FILTERS
+        filter_string = request.POST['filter']
+
+        # REQUIRED NUMBER OF MENTIONS
+        req_mentions_str = request.POST['mentions']
+        if req_mentions_str == '':
+            req_mentions = 0
+        else:
+            req_mentions = 0
+
+        # CONTACT IGHELPER
+        ig_helper  = InstagramHelper()
+        returnthis = ig_helper.get_random_comment(url=post_link, filter_string=filter_string, req_mentions=req_mentions)
+
+        if returnthis is None:
+            returnthis = "NOURL"
+
+        d = {
+            'test': returnthis,
+            'errors': errors
+        }
+        return JsonResponse(d)
+
+    else:
+        return render(request, 'nopower.html')
