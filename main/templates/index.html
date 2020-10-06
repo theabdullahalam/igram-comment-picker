@@ -6,6 +6,8 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
 
+
+
     // THE FUNCTION THAT GETS A WINNER
     function pick_winner() {
         console.log("Clicked");
@@ -19,6 +21,57 @@
         });
     }
 
+
+
+
+
+
+    // TOGGLE FILTER
+    function toggle_filter(){
+
+        if($('#fliter_checkbox').prop('checked') == true){
+            $('#filter_section').show();
+        }else{
+            $('#filter_section').hide();
+        }
+        
+    }
+
+
+
+    // TOGGLE MENTIONS
+    function toggle_mentions(){
+
+        if($('#mentions_checkbox').prop('checked') == true){
+            $('#mentions_section').show();
+        }else{
+            $('#mentions_section').hide();
+        }
+
+    }
+
+
+    // TOGGLE LOGIN
+    function toggle_login(){
+
+        if($('#login_checkbox').prop('checked') == true){
+            $('.login_field').show();
+        }else{
+            $('.login_field').hide();
+        }
+
+    }
+
+
+
+
+    // INITIALISE ALL
+    $(document).ready(function(){
+        toggle_filter();
+        toggle_mentions();
+        toggle_login();
+    })
+
     
 
 
@@ -28,64 +81,87 @@
 {% endblock %} 
 {% block body %}
 <div id="content">
-    <form id="theform">
-        {% csrf_token %} 
-        <table>
-            <!-- post -->
-            <tr>
-                <td><span>Link to Instagram Post: </span></td>
-                <td><input type="text" placeholder="URL" name="postlink" /></td>
-            </tr>
 
-            <!-- filter -->
-            <tr>
-                <td colspan="2">
-                    <input type="checkbox" id="fliter_checkbox" />
-                    <label for="fliter_checkbox">Add Filter (text, hashtags, etc)</label>
-                </td>
-            </tr>
-            <tr id="filter_section">
-                <td><span>Filter: </span></td>
-                <td><input type="text" placeholder="Filter" name="filter" /></td>
-            </tr>
+    <div id="headings">
+        <h1>NOFILTR</h1>
+    </div>
 
-            
-            <!-- mentions -->
-            <tr>
-                <td colspan="2">
-                    <input type="checkbox" id="mentions_checkbox" />
-                    <label for="mentions_checkbox">Require number of mentions/tags</label>
-                </td>
-            </tr>
-            <tr>
-                <td><span>No. of Tags ('@'s): </span></td>
-                <td><input type="number" placeholder="0" name="mentions" /></td>
-            </tr>
+    <div id="errors">
+        <p id="errors_para"></p>
+    </div>
 
+    
+    <div id="formdiv">
+        <form id="theform">
+            {% csrf_token %} 
+            <table>
+                <!-- post -->
+                <tr>
+                    <td><span>Link to Instagram Post: </span></td>
+                    <td><input type="text" placeholder="URL" name="postlink" /></td>
+                </tr>
+    
+                <!-- filter -->
+                <tr>
+                    <td colspan="2">
+                        <input type="checkbox" id="fliter_checkbox" onclick="toggle_filter()"/>
+                        <label for="fliter_checkbox">Add Filter (text, hashtags, etc)</label>
+                    </td>
+                </tr>
+                <tr id="filter_section">
+                    <td><span>Filter: </span></td>
+                    <td><input type="text" placeholder="Filter" name="filter" /></td>
+                </tr>
+    
+                
+                <!-- mentions -->
+                <tr>
+                    <td colspan="2">
+                        <input type="checkbox" id="mentions_checkbox" onclick="toggle_mentions()"/>
+                        <label for="mentions_checkbox">Require number of mentions/tags</label>
+                    </td>
+                </tr>
+                <tr id="mentions_section">
+                    <td><span>No. of Tags ('@'s): </span></td>
+                    <td><input type="number" placeholder="0" name="mentions" /></td>
+                </tr>
+    
+    
+                <!-- login -->
+                <tr>
+                    <td colspan="2">
+                        <input type="checkbox" id="login_checkbox" onclick="toggle_login()" />
+                        <label for="login_checkbox">Provide Login Details (Only required for private accounts).</label>
+                    </td>
+                </tr>
+                <tr class="login_field">
+                    <td><span>Username: </span></td>
+                    <td><input type="text" placeholder="Username" name="username" /></td>
+                </tr>
+                <tr class="login_field">
+                    <td><span>Password: </span></td>
+                    <td><input type="password" placeholder="Password" name="password"/></td>
+                </tr>
+    
+                
+    
+                <tr>
+                    <td colspan="2"><button type="button" style="width: 100%" onclick="pick_winner()">Pick!</button></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    
+    <div id="countdown">
+        <p id="countdown_para"></p>
+    </div>
 
-            <!-- login -->
-            <tr>
-                <td colspan="2">
-                    <input type="checkbox" id="login_checkbox" />
-                    <label for="login_checkbox">Provide Login Details (Only required for private accounts).</label>
-                </td>
-            </tr>
-            <tr>
-                <td><span>Username: </span></td>
-                <td><input type="text" placeholder="Username" name="username" /></td>
-            </tr>
-            <tr>
-                <td><span>Password: </span></td>
-                <td><input type="password" placeholder="Password" name="password"/></td>
-            </tr>
-
-            
-
-            <tr>
-                <td colspan="2"><button type="button" style="width: 100%" onclick="pick_winner()">Pick!</button></td>
-            </tr>
-        </table>
-    </form>
-    <script src="{% static 'js/pick.js' %}"></script>
+    <div id="winnersection">
+        <h2>And the winner is...</h2>
+        <img id="winner_dp" />
+        <h3 id="winner_username"></h3>
+        <p id="winner_profile_link"></p>
+    </div>    
+    
 </div>
 {% endblock %}
