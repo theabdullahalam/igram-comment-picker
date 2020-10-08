@@ -1,16 +1,37 @@
 @import 'colors';
 @import 'inputs';
 
+$layoutbreakpoint: 1400px;
+
+*{
+    transition: all 0.3s;
+}
 
 #content{
     margin: 1rem;
     display: flex;
     flex-direction: column;
 
+    @media screen and (min-width: $layoutbreakpoint) {
+        
+        margin: 3rem;
+        display: grid;
+        grid-template-rows: auto 1fr;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: 
+            "heading form"
+            "message form";
+
+    }
+
     #heading-div{
 
         width: 100%;
         display: flex;
+
+        @media screen and (min-width: $layoutbreakpoint) {
+            grid-area: heading;
+        }
         
         
         
@@ -39,6 +60,10 @@
     #formdiv{
 
         margin-top: 2rem;
+        @media screen and (min-width: $layoutbreakpoint) {
+            grid-area: form;
+            margin-top: 0;
+        }
 
         h2{
             font-weight: 600;
@@ -46,14 +71,22 @@
             font-weight: 800;
             font-size: 1.1rem;
             width: 50%;
+            @media screen and (min-width: $layoutbreakpoint) {
+                margin-top: 0;
+            }
         }
 
         #theform{
+
             display: flex;
             flex-direction: column;
             font-weight: 800;
             font-size: 1.1rem;
             margin-top: 4rem;
+
+            @media screen and (min-width: $layoutbreakpoint) {
+                margin-top: 8rem;
+            }
 
             $placeholdercolor: rgba(255, 255, 255, 0.24);
             $placeholderweight: 800;
@@ -95,6 +128,12 @@
                 border: none;
                 margin-top: 2rem;
                 padding: 1rem;
+                align-self: flex-end;
+
+                @media screen and (min-width: $layoutbreakpoint) {
+                    width: 50% !important;
+                }
+                
             }
 
             ::placeholder{
@@ -127,12 +166,30 @@
                 font-size: $placeholdersize;
             }
 
+            /* Chrome, Safari, Edge, Opera */
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            /* Firefox */
+            input[type=number] {
+                -moz-appearance: textfield;
+            }
+
         }
 
     }
 
 
     #messagesdiv{
+
+        @media screen and (min-width: $layoutbreakpoint) {
+            grid-area: message;
+            place-self: center start;
+        }
+
         p{
             font-size: 2rem;
             font-weight: 800;

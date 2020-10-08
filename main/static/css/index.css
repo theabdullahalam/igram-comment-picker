@@ -1,11 +1,29 @@
+* {
+  transition: all 0.3s;
+}
+
 #content {
   margin: 1rem;
   display: flex;
   flex-direction: column;
 }
+@media screen and (min-width: 1400px) {
+  #content {
+    margin: 3rem;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "heading form" "message form";
+  }
+}
 #content #heading-div {
   width: 100%;
   display: flex;
+}
+@media screen and (min-width: 1400px) {
+  #content #heading-div {
+    grid-area: heading;
+  }
 }
 #content #heading-div #logo {
   margin-right: auto;
@@ -24,6 +42,12 @@
 #content #formdiv {
   margin-top: 2rem;
 }
+@media screen and (min-width: 1400px) {
+  #content #formdiv {
+    grid-area: form;
+    margin-top: 0;
+  }
+}
 #content #formdiv h2 {
   font-weight: 600;
   font-size: 0.8rem;
@@ -31,12 +55,24 @@
   font-size: 1.1rem;
   width: 50%;
 }
+@media screen and (min-width: 1400px) {
+  #content #formdiv h2 {
+    margin-top: 0;
+  }
+}
 #content #formdiv #theform {
   display: flex;
   flex-direction: column;
   font-weight: 800;
   font-size: 1.1rem;
   margin-top: 4rem;
+  /* Chrome, Safari, Edge, Opera */
+  /* Firefox */
+}
+@media screen and (min-width: 1400px) {
+  #content #formdiv #theform {
+    margin-top: 8rem;
+  }
 }
 #content #formdiv #theform .switchdiv {
   display: flex;
@@ -64,6 +100,12 @@
   border: none;
   margin-top: 2rem;
   padding: 1rem;
+  align-self: flex-end;
+}
+@media screen and (min-width: 1400px) {
+  #content #formdiv #theform button {
+    width: 50% !important;
+  }
 }
 #content #formdiv #theform ::placeholder {
   color: rgba(255, 255, 255, 0.24);
@@ -93,6 +135,20 @@
   color: rgba(255, 255, 255, 0.24);
   font-weight: 800;
   font-size: 1.1rem;
+}
+#content #formdiv #theform input::-webkit-outer-spin-button,
+#content #formdiv #theform input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+#content #formdiv #theform input[type=number] {
+  -moz-appearance: textfield;
+}
+@media screen and (min-width: 1400px) {
+  #content #messagesdiv {
+    grid-area: message;
+    place-self: center start;
+  }
 }
 #content #messagesdiv p {
   font-size: 2rem;
