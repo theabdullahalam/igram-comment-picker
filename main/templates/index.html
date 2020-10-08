@@ -8,6 +8,8 @@
 <script>
 
 
+    var toggle_speed = "fast";
+
 
     // THE FUNCTION THAT GETS A WINNER
     function pick_winner() {
@@ -31,9 +33,9 @@
     function toggle_filter(){
 
         if($('#fliter_checkbox').prop('checked') == true){
-            $('#filter_section').show();
+            $('.filter_section').show(toggle_speed);
         }else{
-            $('#filter_section').hide();
+            $('.filter_section').hide(toggle_speed);
         }
         
     }
@@ -44,9 +46,9 @@
     function toggle_mentions(){
 
         if($('#mentions_checkbox').prop('checked') == true){
-            $('#mentions_section').show();
+            $('.mentions_section').show(toggle_speed);
         }else{
-            $('#mentions_section').hide();
+            $('.mentions_section').hide(toggle_speed);
         }
 
     }
@@ -56,9 +58,9 @@
     function toggle_login(){
 
         if($('#login_checkbox').prop('checked') == true){
-            $('.login_field').show();
+            $('.login_field').show(toggle_speed);
         }else{
-            $('.login_field').hide();
+            $('.login_field').hide(toggle_speed);
         }
 
     }
@@ -108,7 +110,7 @@
                 <input class="switch" type="checkbox" id="fliter_checkbox" onclick="toggle_filter()"/>
                 <label class="form-label" for="fliter_checkbox">COMMENT MUST CONTAIN SPECIFIC WORDS OR HASHTAGS (COMMA SEPERATED)</label>
             </div>
-            <input class="form-text-input" type="text" placeholder="product, amazing, #noﬁltr, #awesome" name="filter" />
+            <input class="form-text-input filter_section" type="text" placeholder="product, amazing, #noﬁltr, #awesome" name="filter" />
             
 
             
@@ -117,7 +119,7 @@
                 <input type="checkbox" id="mentions_checkbox" onclick="toggle_mentions()"/>
                 <label class="form-label" for="mentions_checkbox">THESE MANY PEOPLE NEED TO BE TAGGED</label>
             </div>
-            <input class="form-text-input" type="number" placeholder="0" name="mentions" />
+            <input class="form-text-input mentions_section" type="number" placeholder="0" name="mentions" />
             
 
 
@@ -126,8 +128,8 @@
                 <input type="checkbox" id="login_checkbox" onclick="toggle_login()" />
                 <label class="form-label" for="login_checkbox">MY ACCOUNT IS PRIVATE</label>
             </div>
-            <input class="form-text-input" type="text" placeholder="instagram username" name="username" />
-            <input class="form-text-input" type="password" placeholder="instagram password" name="password"/>
+            <input class="form-text-input login_field" type="text" placeholder="instagram username" name="username" />
+            <input class="form-text-input login_field" type="password" placeholder="instagram password" name="password"/>
         
 
 
