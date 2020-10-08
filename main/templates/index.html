@@ -1,5 +1,6 @@
 {% extends 'skeleton.html' %} {% load static %} 
-{% block title %}Page Title{%endblock %} 
+{% block title %}NOFILTR - Instagram Comment Picker{%endblock %} 
+
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/index.css' %}" />
 
@@ -82,86 +83,65 @@
 {% block body %}
 <div id="content">
 
-    <div id="headings">
-        <h1>NOFILTR</h1>
-    </div>
-
-    <div id="errors">
-        <p id="errors_para"></p>
+    <div id="heading-div">
+        <div id="logo">
+            <img src="{% static 'img/nofiltrlogo.png' %}" />
+            <h1>NOFILTR</h1>
+        </div>        
     </div>
 
     
     <div id="formdiv">
+
+        <h2>PICK A RANDOM WINNER FROM INSTAGRAM COMMENTS</h2>
+        
         <form id="theform">
             {% csrf_token %} 
-            <table>
-                <!-- post -->
-                <tr>
-                    <td><span>Link to Instagram Post: </span></td>
-                    <td><input type="text" placeholder="URL" name="postlink" /></td>
-                </tr>
-    
-                <!-- filter -->
-                <tr>
-                    <td colspan="2">
-                        <input type="checkbox" id="fliter_checkbox" onclick="toggle_filter()"/>
-                        <label for="fliter_checkbox">Add Filter (text, hashtags, etc)</label>
-                    </td>
-                </tr>
-                <tr id="filter_section">
-                    <td><span>Filter: </span></td>
-                    <td><input type="text" placeholder="Filter" name="filter" /></td>
-                </tr>
-    
-                
-                <!-- mentions -->
-                <tr>
-                    <td colspan="2">
-                        <input type="checkbox" id="mentions_checkbox" onclick="toggle_mentions()"/>
-                        <label for="mentions_checkbox">Require number of mentions/tags</label>
-                    </td>
-                </tr>
-                <tr id="mentions_section">
-                    <td><span>No. of Tags ('@'s): </span></td>
-                    <td><input type="number" placeholder="0" name="mentions" /></td>
-                </tr>
-    
-    
-                <!-- login -->
-                <tr>
-                    <td colspan="2">
-                        <input type="checkbox" id="login_checkbox" onclick="toggle_login()" />
-                        <label for="login_checkbox">Provide Login Details (Only required for private accounts).</label>
-                    </td>
-                </tr>
-                <tr class="login_field">
-                    <td><span>Username: </span></td>
-                    <td><input type="text" placeholder="Username" name="username" /></td>
-                </tr>
-                <tr class="login_field">
-                    <td><span>Password: </span></td>
-                    <td><input type="password" placeholder="Password" name="password"/></td>
-                </tr>
-    
-                
-    
-                <tr>
-                    <td colspan="2"><button type="button" style="width: 100%" onclick="pick_winner()">Pick!</button></td>
-                </tr>
-            </table>
+            
+            <!-- post -->
+            <span class="form-label">LINK TO THE POST</span>
+            <input class="form-text-input" type="text" placeholder="url" name="postlink" />
+            
+
+            <!-- filter -->
+            <div class="switchdiv">
+                <input class="switch" type="checkbox" id="fliter_checkbox" onclick="toggle_filter()"/>
+                <label class="form-label" for="fliter_checkbox">COMMENT MUST CONTAIN SPECIFIC WORDS OR HASHTAGS (COMMA SEPERATED)</label>
+            </div>
+            <input class="form-text-input" type="text" placeholder="product, amazing, #noﬁltr, #awesome" name="filter" />
+            
+
+            
+            <!-- mentions -->
+            <div class="switchdiv">
+                <input type="checkbox" id="mentions_checkbox" onclick="toggle_mentions()"/>
+                <label class="form-label" for="mentions_checkbox">THESE MANY PEOPLE NEED TO BE TAGGED</label>
+            </div>
+            <input class="form-text-input" type="number" placeholder="0" name="mentions" />
+            
+
+
+            <!-- login -->
+            <div class="switchdiv">
+                <input type="checkbox" id="login_checkbox" onclick="toggle_login()" />
+                <label class="form-label" for="login_checkbox">MY ACCOUNT IS PRIVATE</label>
+            </div>
+            <input class="form-text-input" type="text" placeholder="instagram username" name="username" />
+            <input class="form-text-input" type="password" placeholder="instagram password" name="password"/>
+        
+
+
+            <!-- SUBMIT -->
+            <button type="button" style="width: 100%" onclick="pick_winner()">PICK A WINNER</button>
+            
         </form>
     </div>
     
-    <div id="countdown">
-        <p id="countdown_para"></p>
+    <div id="messagesdiv">
+        <p id="messagespara">
+            please wait for 29 seconds...
+        </p>
     </div>
-
-    <div id="winnersection">
-        <h2>And the winner is...</h2>
-        <img id="winner_dp" />
-        <h3 id="winner_username"></h3>
-        <p id="winner_profile_link"></p>
-    </div>    
     
 </div>
 {% endblock %}

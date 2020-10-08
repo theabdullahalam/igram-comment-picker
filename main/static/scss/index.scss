@@ -1,11 +1,144 @@
 @import 'colors';
+@import 'inputs';
+
 
 #content{
-    margin: 2em;
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+
+    #heading-div{
+
+        width: 100%;
+        display: flex;
+        
+        
+        
+        #logo{
+            margin-right: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            img{
+                max-width: 5rem;
+            }
+
+            h1{
+                font-size: 0.8rem;
+                font-weight: bold;
+                margin-top: 1rem;
+            }
+
+        }
+
+        
+    }
+
+
+    #formdiv{
+
+        margin-top: 2rem;
+
+        h2{
+            font-weight: 600;
+            font-size: 0.8rem;
+            font-weight: 800;
+            font-size: 1.1rem;
+            width: 50%;
+        }
+
+        #theform{
+            display: flex;
+            flex-direction: column;
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-top: 4rem;
+
+            $placeholdercolor: rgba(255, 255, 255, 0.24);
+            $placeholderweight: 800;
+            $placeholdersize: 1.1rem;
+
+            .switchdiv{
+                display: flex;
+                align-items: center;
+                margin-top: 2rem;
+                
+
+                input{
+                    // display: inline-block;
+                    margin-right: 1rem;
+                }
+
+            }
+
+            .form-text-input{
+
+                background: transparent;
+                border: 4px solid rgb(230, 230, 230);
+                color: white;
+                padding: 0.5rem;
+                margin-top: 8px;
+
+                font-weight: $placeholderweight;
+                font-size: $placeholdersize;
+
+            }
+
+
+            button{
+                width: 100%;
+                color: black;
+                background: snow;
+                font-weight: 800;
+                font-size: 1.1rem;
+                border: none;
+                margin-top: 2rem;
+                padding: 1rem;
+            }
+
+            ::placeholder{
+                color: $placeholdercolor;
+                font-weight: $placeholderweight;
+                font-size: $placeholdersize;
+            }
+
+            ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+                color: $placeholdercolor;
+                font-weight: $placeholderweight;
+                font-size: $placeholdersize;
+            }
+            
+            ::-moz-placeholder { /* Firefox 19+ */
+                color: $placeholdercolor;
+                font-weight: $placeholderweight;
+                font-size: $placeholdersize;
+            }
+
+            :-ms-input-placeholder { /* IE 10+ */
+                color: $placeholdercolor;
+                font-weight: $placeholderweight;
+                font-size: $placeholdersize;
+            }
+
+            :-moz-placeholder { /* Firefox 18- */
+                color: $placeholdercolor;
+                font-weight: $placeholderweight;
+                font-size: $placeholdersize;
+            }
+
+        }
+
+    }
+
+
+    #messagesdiv{
+        p{
+            font-size: 2rem;
+            font-weight: 800;
+        }
+    }
+    
 }
 
-@media screen and (min-width: 50em){
-    #content{
-        max-width: 45em;
-    }
-}
+
