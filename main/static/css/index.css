@@ -90,7 +90,7 @@
 #content #formdiv #theform button {
   width: 100%;
   color: black;
-  background: snow;
+  background: #f1f1f1;
   font-weight: 800;
   font-size: 1.1rem;
   border: none;
@@ -102,6 +102,10 @@
   #content #formdiv #theform button {
     width: 50% !important;
   }
+}
+#content #formdiv #theform button:hover {
+  background: white;
+  cursor: pointer;
 }
 #content #formdiv #theform ::placeholder {
   color: rgba(255, 255, 255, 0.24);
@@ -144,6 +148,7 @@
   #content #messagesdiv {
     grid-area: message;
     place-self: center start;
+    margin-right: 2rem;
   }
 }
 #content #messagesdiv p {

@@ -49,8 +49,11 @@ def pickwinner(request):
         if returnthis is None:
             returnthis = "NOURL"
 
+        # returnthis = "aa bb cc dd ee ff gg hh ii jj kk ll mm nn oo pp qq rr ss tt uu vv ww xx yy zz"
+
         d = {
-            'test': returnthis,
+            'response': returnthis,
+            'wait': 30,
             'errors': errors
         }
         return JsonResponse(d)

@@ -9,16 +9,19 @@
 
 
     var toggle_speed = "fast";
+    let time_remaining = 0;
+    let timerHandle;
 
 
     // THE FUNCTION THAT GETS A WINNER
     function pick_winner() {
-        console.log("Clicked");
+        set_button_message("PICKING...")
         var jqxhr = $.post("http://localhost:8000/pickwinner", $( "#theform" ).serialize(), function (d) {
-            console.log(d["test"]);
 
-            // let the_string = "CPU: " + d['cpu_temp'] + "° C";
-            // $("#cpu-temp-section").text(the_string);
+            response_text = d["response"]
+            set_message(response_text)
+            set_timer(d["wait"]);
+
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.log(errorThrown);
         });
@@ -26,7 +29,44 @@
 
 
 
+    function initialise_everything(){
+        clearInterval(timerHandle);
+        time_remaining = 0;
+        set_message("Enter the URL and click on \" Pick Winner\"!");        
+        $('#pickbutton').attr("disabled", false);
+    }
 
+
+
+    // ************************SETTING MESSAGE*************************
+    function set_message(message){
+        $('#messagespara').text(message);
+    }
+
+    function set_button_message(message){
+        $('#pickbutton').text(message);
+    }
+
+    
+    
+
+    // ******************** TIMER  FUNCTIONS **************************
+    function set_timer(seconds){
+        time_remaining = seconds;
+        timerHandle = setInterval(count_down_one_sec, 1000);
+        $('#pickbutton').attr("disabled", true);
+    }
+    
+    function count_down_one_sec(){
+        if(time_remaining > 0){
+            time_remaining -= 1;
+            set_button_message("Please wait for " + time_remaining + "s...")
+        }else{
+            clearInterval(timerHandle);
+            set_button_message("PICK WINNER!");
+            $('#pickbutton').attr("disabled", false);
+        }
+    }
 
 
     // TOGGLE FILTER
@@ -36,6 +76,7 @@
             $('.filter_section').show(toggle_speed);
         }else{
             $('.filter_section').hide(toggle_speed);
+            $('#filterinput').val('');
         }
         
     }
@@ -49,6 +90,7 @@
             $('.mentions_section').show(toggle_speed);
         }else{
             $('.mentions_section').hide(toggle_speed);
+            $('#mentionsinput').val('');
         }
 
     }
@@ -61,6 +103,7 @@
             $('.login_field').show(toggle_speed);
         }else{
             $('.login_field').hide(toggle_speed);
+            $('.login_field').val('');
         }
 
     }
@@ -73,6 +116,7 @@
         toggle_filter();
         toggle_mentions();
         toggle_login();
+        initialise_everything();
     })
 
     
@@ -110,7 +154,7 @@
                 <input class="switch" type="checkbox" id="fliter_checkbox" onclick="toggle_filter()"/>
                 <label class="form-label" for="fliter_checkbox">COMMENT MUST CONTAIN SPECIFIC WORDS OR HASHTAGS (COMMA SEPERATED)</label>
             </div>
-            <input class="form-text-input filter_section" type="text" placeholder="product, amazing, #noﬁltr, #awesome" name="filter" />
+            <input id="filterinput" class="form-text-input filter_section" type="text" placeholder="product, amazing, #noﬁltr, #awesome" name="filter" />
             
 
             
@@ -119,7 +163,7 @@
                 <input type="checkbox" id="mentions_checkbox" onclick="toggle_mentions()"/>
                 <label class="form-label" for="mentions_checkbox">THESE MANY PEOPLE NEED TO BE TAGGED</label>
             </div>
-            <input class="form-text-input mentions_section" type="number" placeholder="0" name="mentions" />
+            <input id="mentionsinput" class="form-text-input mentions_section" type="number" placeholder="0" name="mentions" />
             
 
 
@@ -134,7 +178,7 @@
 
 
             <!-- SUBMIT -->
-            <button type="button" style="width: 100%" onclick="pick_winner()">PICK A WINNER</button>
+            <button id="pickbutton" type="button" style="width: 100%" onclick="pick_winner()">PICK A WINNER</button>
             
         </form>
     </div>

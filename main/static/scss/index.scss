@@ -118,7 +118,7 @@ $layoutbreakpoint: 1400px;
             button{
                 width: 100%;
                 color: black;
-                background: snow;
+                background: rgb(241, 241, 241);
                 font-weight: 800;
                 font-size: 1.1rem;
                 border: none;
@@ -128,8 +128,13 @@ $layoutbreakpoint: 1400px;
 
                 @media screen and (min-width: $layoutbreakpoint) {
                     width: 50% !important;
-                }
+                }                
                 
+            }
+
+            button:hover{
+                background: rgb(255, 255, 255);
+                cursor: pointer;
             }
 
             ::placeholder{
@@ -181,9 +186,12 @@ $layoutbreakpoint: 1400px;
 
     #messagesdiv{
 
+        
+
         @media screen and (min-width: $layoutbreakpoint) {
             grid-area: message;
             place-self: center start;
+            margin-right: 2rem;
         }
 
         p{

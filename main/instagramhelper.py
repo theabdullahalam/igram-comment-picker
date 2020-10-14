@@ -80,13 +80,13 @@ class InstagramHelper:
             url = str(url).split('?igshid=')[0]
         
         # GET MEDIA ID
-        # media = self.instagram.get_media_by_url(url)
-        # media_id = media.identifier
+        media = self.instagram.get_media_by_url(url)
+        media_id = media.identifier
 
         # GET COMMENTS
-        # comments = self.instagram.get_media_comments_by_id(media_id, 10000)
-        # all_comment_objs = comments['comments']
-        all_comment_objs = self.get_mock_comments()
+        comments = self.instagram.get_media_comments_by_id(media_id, 10000)
+        all_comment_objs = comments['comments']
+        # all_comment_objs = self.get_mock_comments()
         valid_comments = []
 
         # FILTER
