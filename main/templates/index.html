@@ -18,8 +18,11 @@
         set_button_message("PICKING...")
         var jqxhr = $.post("http://localhost:8000/pickwinner", $( "#theform" ).serialize(), function (d) {
 
-            response_text = d["response"]
-            set_message(response_text)
+            // response = d["response"]
+            // console.log(d);
+
+            thetext = "The winning comment is <br />\"" + d["comment_text"] + "\"<br /><br /> by user <br />\"" + d["comment_username"] + "\"";
+            set_message(thetext)
             set_timer(d["wait"]);
 
         }).fail(function (jqXHR, textStatus, errorThrown) {
@@ -40,7 +43,8 @@
 
     // ************************SETTING MESSAGE*************************
     function set_message(message){
-        $('#messagespara').text(message);
+        // $('#messagespara').text(message);
+        document.querySelector("#messagespara").innerHTML = message;
     }
 
     function set_button_message(message){

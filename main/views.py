@@ -19,7 +19,7 @@ def pickwinner(request):
 
     if request.method == 'POST':    
 
-        print(request.POST)
+        # print(request.POST)
         # print(request.method)
 
 
@@ -42,17 +42,14 @@ def pickwinner(request):
         else:
             req_mentions = 0
 
-        # CONTACT IGHELPER
+        # USE IGHELPER
         ig_helper  = InstagramHelper()
-        returnthis = ig_helper.get_random_comment(url=post_link, filter_string=filter_string, req_mentions=req_mentions)
-
-        if returnthis is None:
-            returnthis = "NOURL"
-
-        # returnthis = "aa bb cc dd ee ff gg hh ii jj kk ll mm nn oo pp qq rr ss tt uu vv ww xx yy zz"
+        all_comments = ig_helper.get_all_comments(url=post_link)
+        random_comment = ig_helper.get_random_comment(all_comments)
 
         d = {
-            'response': returnthis,
+            'comment_text': random_comment.text,
+            'comment_username': random_comment.owner.username,
             'wait': 30,
             'errors': errors
         }
