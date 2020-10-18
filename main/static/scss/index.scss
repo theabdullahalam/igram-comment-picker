@@ -112,7 +112,20 @@ $layoutbreakpoint: 1400px;
                 font-weight: $placeholderweight;
                 font-size: $placeholdersize;
 
+                transform-origin: top center;
+
+                transition: 
+                    transform 0.15s ease-out,
+                    margin-bottom 0.15s ease-out;
+
             }
+
+            .form-text-input.hidden{
+                transform: scaleY(0);
+                margin-bottom: -3rem;
+            }
+
+
 
 
             button{

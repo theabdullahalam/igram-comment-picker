@@ -18,14 +18,8 @@
         set_button_message("PICKING...")
         var jqxhr = $.post("http://192.168.0.113:8000/pickwinner", $( "#theform" ).serialize(), function (d) {
 
-            // response = d["response"]
-            // console.log(d);
-
-            thetext = "<small>the winning comment is</small> <br />" + d["comment_text"] + "<br /><br /> <small>by user</small><br /><a href=\"https://instagram.com/" + d["comment_username"] + "\" target=\"_blank\">@" + d["comment_username"];
-
 
             commentext = `<small>the winning comment is</small><br />${d["comment_text"]}<br /><br /> <small>by user</small><br /><a href="https://instagram.com/${d["comment_username"]}" target="_blank">${d["comment_username"]}</a>`
-
 
             set_message(commentext)
             set_timer(d["wait"]);
@@ -40,20 +34,19 @@
     function initialise_everything(){
         clearInterval(timerHandle);
         time_remaining = 0;
-        set_message("Enter the URL and click on \" Pick Winner\"!");        
-        $('#pickbutton').attr("disabled", false);
+        set_message("Enter the URL and click on \" Pick Winner\"!");
+        document.getElementById("pickbutton").disabled = false;
     }
 
 
 
     // ************************SETTING MESSAGE*************************
     function set_message(message){
-        // $('#messagespara').text(message);
-        document.querySelector("#messagespara").innerHTML = message;
+        document.getElementById("messagespara").innerHTML = message;
     }
 
     function set_button_message(message){
-        $('#pickbutton').text(message);
+        document.getElementById("pickbutton").innerHTML = message;
     }
 
     
@@ -63,7 +56,7 @@
     function set_timer(seconds){
         time_remaining = seconds;
         timerHandle = setInterval(count_down_one_sec, 1000);
-        $('#pickbutton').attr("disabled", true);
+        document.getElementById("pickbutton").disabled = true;
     }
     
     function count_down_one_sec(){
@@ -73,60 +66,75 @@
         }else{
             clearInterval(timerHandle);
             set_button_message("PICK WINNER!");
-            $('#pickbutton').attr("disabled", false);
+            document.getElementById("pickbutton").disabled = false;
         }
     }
 
 
-    // TOGGLE FILTER
-    function toggle_filter(){
 
-        if($('#fliter_checkbox').prop('checked') == true){
-            $('.filter_section').show(toggle_speed);
-        }else{
-            $('.filter_section').hide(toggle_speed);
-            $('#filterinput').val('');
-        }
-        
+    // ABSTRACT UPDATE FUNCTION
+    function update_section(checkboxid, elementclass){
+
+        for (let element of document.getElementsByClassName(elementclass)){
+
+            if ( document.getElementById(checkboxid).checked === true ){
+                // element.style.display = "block";
+                // setTimeout(() => { element.classList.remove('hidden') }, 300);
+                element.classList.remove('hidden');
+                
+            } else {
+                element.value = "";
+                element.classList.add('hidden');
+                setTimeout(() => {}, 300);
+                
+            }
+
+        }        
+
+    }
+
+
+    // UPDATE FILTER
+    function update_filter(){
+        update_section('fliter_checkbox', 'filter_section');
     }
 
 
 
-    // TOGGLE MENTIONS
-    function toggle_mentions(){
-
-        if($('#mentions_checkbox').prop('checked') == true){
-            $('.mentions_section').show(toggle_speed);
-        }else{
-            $('.mentions_section').hide(toggle_speed);
-            $('#mentionsinput').val('');
-        }
-
+    // UPDATE MENTIONS
+    function update_mentions(){
+        update_section('mentions_checkbox', 'mentions_section');
     }
 
 
     // TOGGLE LOGIN
-    function toggle_login(){
-
-        if($('#login_checkbox').prop('checked') == true){
-            $('.login_field').show(toggle_speed);
-        }else{
-            $('.login_field').hide(toggle_speed);
-            $('.login_field').val('');
-        }
-
+    function update_login(){
+        update_section('login_checkbox', 'login_field');
     }
 
 
 
 
     // INITIALISE ALL
-    $(document).ready(function(){
-        toggle_filter();
-        toggle_mentions();
-        toggle_login();
+    document.addEventListener('DOMContentLoaded', function(){ 
+
+        // UNCHECK FILTER
+        document.getElementById('fliter_checkbox').checked = false;
+        update_filter();
+
+
+        // UNCHECK MENTIONS
+        document.getElementById('mentions_checkbox').checked = false;
+        update_mentions();
+
+        // UNCHECK LOGINS
+        document.getElementById('login_checkbox').checked = false;
+        update_login();
+
+        // OTHER CLEANUPS
         initialise_everything();
-    })
+
+    }, false);
 
     
 
@@ -161,7 +169,7 @@
 
             <!-- filter -->
             <div class="switchdiv">
-                <input class="switch" type="checkbox" id="fliter_checkbox" onclick="toggle_filter()"/>
+                <input type="checkbox" id="fliter_checkbox" onclick="update_filter()"/>
                 <label class="form-label" for="fliter_checkbox">COMMENT MUST CONTAIN SPECIFIC WORDS OR HASHTAGS (COMMA SEPERATED)</label>
             </div>
             <input id="filterinput" class="form-text-input filter_section" type="text" placeholder="product, amazing, #noﬁltr, #awesome" name="filter" />
@@ -170,7 +178,7 @@
             
             <!-- mentions -->
             <div class="switchdiv">
-                <input type="checkbox" id="mentions_checkbox" onclick="toggle_mentions()"/>
+                <input type="checkbox" id="mentions_checkbox" onclick="update_mentions()"/>
                 <label class="form-label" for="mentions_checkbox">THESE MANY PEOPLE NEED TO BE TAGGED</label>
             </div>
             <input id="mentionsinput" class="form-text-input mentions_section" type="number" placeholder="0" name="mentions" />
@@ -179,7 +187,7 @@
 
             <!-- login -->
             <div class="switchdiv">
-                <input type="checkbox" id="login_checkbox" onclick="toggle_login()"/>
+                <input type="checkbox" id="login_checkbox" onclick="update_login()"/>
                 <label class="form-label" for="login_checkbox">MY ACCOUNT IS PRIVATE</label>
             </div>
             <input class="form-text-input login_field" type="text" placeholder="instagram username" name="username" />
