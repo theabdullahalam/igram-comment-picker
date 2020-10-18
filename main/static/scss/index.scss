@@ -197,6 +197,19 @@ $layoutbreakpoint: 1400px;
         p{
             font-size: 2rem;
             font-weight: 800;
+
+            small{
+                font-size: 1rem;
+                font-weight: normal;
+            }
+
+            a{
+                color: rgb(236, 225, 225);
+            }
+
+            a:visited{
+                color: rgb(236, 225, 225);
+            }
         }
     }
     

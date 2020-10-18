@@ -155,5 +155,15 @@
   font-size: 2rem;
   font-weight: 800;
 }
+#content #messagesdiv p small {
+  font-size: 1rem;
+  font-weight: normal;
+}
+#content #messagesdiv p a {
+  color: #ece1e1;
+}
+#content #messagesdiv p a:visited {
+  color: #ece1e1;
+}
 
 /*# sourceMappingURL=index.css.map */
