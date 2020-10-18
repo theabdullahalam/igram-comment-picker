@@ -151,6 +151,7 @@
         <h2>PICK A RANDOM WINNER FROM INSTAGRAM COMMENTS</h2>
         
         <form id="theform">
+            
             {% csrf_token %} 
             
             <!-- post -->
@@ -178,7 +179,7 @@
 
             <!-- login -->
             <div class="switchdiv">
-                <input type="checkbox" id="login_checkbox" onclick="toggle_login()" />
+                <input type="checkbox" id="login_checkbox" onclick="toggle_login()"/>
                 <label class="form-label" for="login_checkbox">MY ACCOUNT IS PRIVATE</label>
             </div>
             <input class="form-text-input login_field" type="text" placeholder="instagram username" name="username" />

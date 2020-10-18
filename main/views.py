@@ -22,7 +22,6 @@ def pickwinner(request):
         print(request.POST)
 
         # SANITIZE EVERYTHING
-        returnthis = ''
         errors = []
 
         # INSTA POST URL
