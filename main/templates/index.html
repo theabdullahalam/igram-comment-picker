@@ -12,29 +12,79 @@
     let time_remaining = 0;
     let timerHandle;
 
-
     // THE FUNCTION THAT GETS A WINNER
     function pick_winner() {
-        set_button_message("PICKING...")
+
+        // ENSURE THE MENTIONS IS A NUMBER
+        let mentions = document.getElementById('mentionsinput');
+        if ( mentions.validity.badInput ) {
+            alert('Mentions can only be a number');
+            return;
+        }
+
+        // SETUP THE UI
+        set_button_message("PICKING...");
+        set_message("Picking a random winner, please wait...");
+        let button = document.getElementById("pickbutton");
+        button.style.cursor = "wait";
+        dim_everything();
+
+        // FETCH THE COMMENT
         var jqxhr = $.post("http://192.168.0.113:8000/pickwinner", $( "#theform" ).serialize(), function (d) {
 
-
-            commentext = `<small>the winning comment is</small><br />${d["comment_text"]}<br /><br /> <small>by user</small><br /><a href="https://instagram.com/${d["comment_username"]}" target="_blank">${d["comment_username"]}</a>`
-
-            set_message(commentext)
-            set_timer(d["wait"]);
+            process_response(d);
 
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.log(errorThrown);
         });
+
     }
 
 
+    function process_response(data){
+
+        let messagetext = ''
+
+        // CHECK FOR ERRORS
+        errors = data['errors']
+        if ( errors.length > 0){
+
+            for (let errorcode of errors) {
+
+                if ( errorcode === 'NOLOGIN' ) {
+                    messagetext += `<small>error</small><br />There was some problem logging in.<br /><br />`;
+                    break;
+                }
+
+                if ( errorcode === 'NOURL' ) {
+                    messagetext += `<small>error</small><br />This URL is not supported.<br /><br />`;
+                }
+
+                if ( errorcode === 'NOCOMMENT' ) {
+                    messagetext += `<small>error</small><br />Could not fetch the comment. Is the account private?<br /><br />`;
+                }
+
+                if ( errorcode === 'NOMATCH' ) {
+                    messagetext += `<small>error</small><br />There are no comments matching this criteria, or there are no comments at all.<br /> ¯\\_(ツ)_/¯<br /><br />`;
+                }
+                
+
+            }
+
+        } else {
+            messagetext = `<small>the winning comment is</small><br />${ data["comment_text"] }<br /><br /> <small>by user</small><br /><a href="https://instagram.com/${ data["comment_username"] }" target="_blank">${ data["comment_username"] }</a>`
+        }
+
+        set_message(messagetext);
+        set_timer(data["wait"]);
+
+    }
+
+    
 
     function initialise_everything(){
         clearInterval(timerHandle);
         time_remaining = 0;
-        set_message("Enter the URL and click on \" Pick Winner\"!");
         document.getElementById("pickbutton").disabled = false;
     }
 
@@ -42,7 +92,17 @@
 
     // ************************SETTING MESSAGE*************************
     function set_message(message){
-        document.getElementById("messagespara").innerHTML = message;
+
+        paragraph = document.getElementById("messagespara");
+        paragraph.style.opacity = "0%";
+
+        setTimeout(() => {
+            paragraph.innerHTML = message;
+            setTimeout(() => {
+                paragraph.style.opacity = "unset";
+            }, 200 );
+        }, 500 );
+
     }
 
     function set_button_message(message){
@@ -56,7 +116,22 @@
     function set_timer(seconds){
         time_remaining = seconds;
         timerHandle = setInterval(count_down_one_sec, 1000);
-        document.getElementById("pickbutton").disabled = true;
+        let button = document.getElementById("pickbutton");
+        button.disabled = true;
+        button.style.cursor = "wait";
+        dim_everything();
+    }
+
+    function dim_everything(){
+        let theform = document.getElementById('theform');
+        theform.disabled = true;
+        theform.style.opacity = "10%";
+    }
+
+    function show_everything(){
+        let theform = document.getElementById('theform');
+        theform.disabled = false;
+        theform.style.opacity = "unset";
     }
     
     function count_down_one_sec(){
@@ -66,7 +141,10 @@
         }else{
             clearInterval(timerHandle);
             set_button_message("PICK WINNER!");
-            document.getElementById("pickbutton").disabled = false;
+            let button = document.getElementById("pickbutton");
+            button.disabled = false;
+            button.style.cursor = "pointer";
+            show_everything();
         }
     }
 
@@ -203,7 +281,7 @@
     
     <div id="messagesdiv">
         <p id="messagespara">
-            picking a random winner....
+            
         </p>
     </div>
     

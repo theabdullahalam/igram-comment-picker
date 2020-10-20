@@ -22,18 +22,25 @@ class InstagramHelper:
     def get_all_comments(self, url=None, private=False):
         if url is None:
             return None #NOPE OUT IF URL IS NOT PASSED
+
+        all_comment_objs = []
         
-        # REMOVE IGSHID
-        if '?igshid=' in url:
-            url = str(url).split('?igshid=')[0]
+        try:
+            # REMOVE IGSHID
+            if '?igshid=' in url:
+                url = str(url).split('?igshid=')[0]
 
-        # GET MEDIA ID
-        media = self.instagram.get_media_by_url(url)
-        media_id = media.identifier
 
-        # GET COMMENTS
-        comments = self.instagram.get_media_comments_by_id(media_id, 10000)
-        all_comment_objs = comments['comments']
+            # GET MEDIA ID
+            media = self.instagram.get_media_by_url(url)
+            media_id = media.identifier
+
+            # GET COMMENTS
+            comments = self.instagram.get_media_comments_by_id(media_id, 10000)
+            all_comment_objs = comments['comments']
+        except Exception as e:
+            print(e)
+            pass
 
         return all_comment_objs
 
