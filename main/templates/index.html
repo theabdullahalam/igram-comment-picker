@@ -12,39 +12,101 @@
     let time_remaining = 0;
     let timerHandle;
 
-
     // THE FUNCTION THAT GETS A WINNER
     function pick_winner() {
-        set_button_message("PICKING...")
-        var jqxhr = $.post("http://localhost:8000/pickwinner", $( "#theform" ).serialize(), function (d) {
 
-            response_text = d["response"]
-            set_message(response_text)
-            set_timer(d["wait"]);
+        // ENSURE THE MENTIONS IS A NUMBER
+        let mentions = document.getElementById('mentionsinput');
+        if ( mentions.validity.badInput ) {
+            alert('Mentions can only be a number');
+            return;
+        }
+
+        // SETUP THE UI
+        set_button_message("PICKING...");
+        set_message("Picking a random winner, please wait...");
+        let button = document.getElementById("pickbutton");
+        button.style.cursor = "wait";
+        dim_everything();
+
+        // FETCH THE COMMENT
+        var jqxhr = $.post("http://192.168.0.113:8000/pickwinner", $( "#theform" ).serialize(), function (d) {
+
+            process_response(d);
 
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.log(errorThrown);
         });
+
     }
 
 
+    function process_response(data){
+
+        let messagetext = ''
+
+        // CHECK FOR ERRORS
+        errors = data['errors']
+        if ( errors.length > 0){
+
+            for (let errorcode of errors) {
+
+                if ( errorcode === 'NOLOGIN' ) {
+                    messagetext += `<small>error</small><br />There was some problem logging in.<br /><br />`;
+                    break;
+                }
+
+                if ( errorcode === 'NOURL' ) {
+                    messagetext += `<small>error</small><br />This URL is not supported.<br /><br />`;
+                }
+
+                if ( errorcode === 'NOCOMMENT' ) {
+                    messagetext += `<small>error</small><br />Could not fetch the comment. Is the account private?<br /><br />`;
+                }
+
+                if ( errorcode === 'NOMATCH' ) {
+                    messagetext += `<small>error</small><br />There are no comments matching this criteria, or there are no comments at all.<br /> ¯\\_(ツ)_/¯<br /><br />`;
+                }
+                
+
+            }
+
+        } else {
+            messagetext = `<small>the winning comment is</small><br />${ data["comment_text"] }<br /><br /> <small>by user</small><br /><a href="https://instagram.com/${ data["comment_username"] }" target="_blank">${ data["comment_username"] }</a>`
+        }
+
+        set_message(messagetext);
+        set_timer(data["wait"]);
+
+    }
+
+    
 
     function initialise_everything(){
         clearInterval(timerHandle);
         time_remaining = 0;
-        set_message("Enter the URL and click on \" Pick Winner\"!");        
-        $('#pickbutton').attr("disabled", false);
+        document.getElementById("pickbutton").disabled = false;
     }
 
 
 
     // ************************SETTING MESSAGE*************************
     function set_message(message){
-        $('#messagespara').text(message);
+
+        paragraph = document.getElementById("messagespara");
+        paragraph.style.opacity = "0%";
+
+        setTimeout(() => {
+            paragraph.innerHTML = message;
+            setTimeout(() => {
+                paragraph.style.opacity = "unset";
+            }, 200 );
+        }, 500 );
+
     }
 
     function set_button_message(message){
-        $('#pickbutton').text(message);
+        document.getElementById("pickbutton").innerHTML = message;
     }
 
     
@@ -54,7 +116,22 @@
     function set_timer(seconds){
         time_remaining = seconds;
         timerHandle = setInterval(count_down_one_sec, 1000);
-        $('#pickbutton').attr("disabled", true);
+        let button = document.getElementById("pickbutton");
+        button.disabled = true;
+        button.style.cursor = "wait";
+        dim_everything();
+    }
+
+    function dim_everything(){
+        let theform = document.getElementById('theform');
+        theform.disabled = true;
+        theform.style.opacity = "10%";
+    }
+
+    function show_everything(){
+        let theform = document.getElementById('theform');
+        theform.disabled = false;
+        theform.style.opacity = "unset";
     }
     
     function count_down_one_sec(){
@@ -64,60 +141,78 @@
         }else{
             clearInterval(timerHandle);
             set_button_message("PICK WINNER!");
-            $('#pickbutton').attr("disabled", false);
+            let button = document.getElementById("pickbutton");
+            button.disabled = false;
+            button.style.cursor = "pointer";
+            show_everything();
         }
     }
 
 
-    // TOGGLE FILTER
-    function toggle_filter(){
 
-        if($('#fliter_checkbox').prop('checked') == true){
-            $('.filter_section').show(toggle_speed);
-        }else{
-            $('.filter_section').hide(toggle_speed);
-            $('#filterinput').val('');
-        }
-        
+    // ABSTRACT UPDATE FUNCTION
+    function update_section(checkboxid, elementclass){
+
+        for (let element of document.getElementsByClassName(elementclass)){
+
+            if ( document.getElementById(checkboxid).checked === true ){
+                // element.style.display = "block";
+                // setTimeout(() => { element.classList.remove('hidden') }, 300);
+                element.classList.remove('hidden');
+                
+            } else {
+                element.value = "";
+                element.classList.add('hidden');
+                setTimeout(() => {}, 300);
+                
+            }
+
+        }        
+
+    }
+
+
+    // UPDATE FILTER
+    function update_filter(){
+        update_section('fliter_checkbox', 'filter_section');
     }
 
 
 
-    // TOGGLE MENTIONS
-    function toggle_mentions(){
-
-        if($('#mentions_checkbox').prop('checked') == true){
-            $('.mentions_section').show(toggle_speed);
-        }else{
-            $('.mentions_section').hide(toggle_speed);
-            $('#mentionsinput').val('');
-        }
-
+    // UPDATE MENTIONS
+    function update_mentions(){
+        update_section('mentions_checkbox', 'mentions_section');
     }
 
 
     // TOGGLE LOGIN
-    function toggle_login(){
-
-        if($('#login_checkbox').prop('checked') == true){
-            $('.login_field').show(toggle_speed);
-        }else{
-            $('.login_field').hide(toggle_speed);
-            $('.login_field').val('');
-        }
-
+    function update_login(){
+        update_section('login_checkbox', 'login_field');
     }
 
 
 
 
     // INITIALISE ALL
-    $(document).ready(function(){
-        toggle_filter();
-        toggle_mentions();
-        toggle_login();
+    document.addEventListener('DOMContentLoaded', function(){ 
+
+        // UNCHECK FILTER
+        document.getElementById('fliter_checkbox').checked = false;
+        update_filter();
+
+
+        // UNCHECK MENTIONS
+        document.getElementById('mentions_checkbox').checked = false;
+        update_mentions();
+
+        // UNCHECK LOGINS
+        document.getElementById('login_checkbox').checked = false;
+        update_login();
+
+        // OTHER CLEANUPS
         initialise_everything();
-    })
+
+    }, false);
 
     
 
@@ -142,7 +237,8 @@
         <h2>PICK A RANDOM WINNER FROM INSTAGRAM COMMENTS</h2>
         
         <form id="theform">
-            {% csrf_token %}
+            
+            {% csrf_token %} 
             
             <!-- post -->
             <span class="form-label">LINK TO THE POST</span>
@@ -151,7 +247,7 @@
 
             <!-- filter -->
             <div class="switchdiv">
-                <input class="switch" type="checkbox" id="fliter_checkbox" onclick="toggle_filter()"/>
+                <input type="checkbox" id="fliter_checkbox" onclick="update_filter()"/>
                 <label class="form-label" for="fliter_checkbox">COMMENT MUST CONTAIN SPECIFIC WORDS OR HASHTAGS (COMMA SEPERATED)</label>
             </div>
             <input id="filterinput" class="form-text-input filter_section" type="text" placeholder="product, amazing, #noﬁltr, #awesome" name="filter" />
@@ -160,7 +256,7 @@
             
             <!-- mentions -->
             <div class="switchdiv">
-                <input type="checkbox" id="mentions_checkbox" onclick="toggle_mentions()"/>
+                <input type="checkbox" id="mentions_checkbox" onclick="update_mentions()"/>
                 <label class="form-label" for="mentions_checkbox">THESE MANY PEOPLE NEED TO BE TAGGED</label>
             </div>
             <input id="mentionsinput" class="form-text-input mentions_section" type="number" placeholder="0" name="mentions" />
@@ -169,7 +265,7 @@
 
             <!-- login -->
             <div class="switchdiv">
-                <input type="checkbox" id="login_checkbox" onclick="toggle_login()" />
+                <input type="checkbox" id="login_checkbox" onclick="update_login()"/>
                 <label class="form-label" for="login_checkbox">MY ACCOUNT IS PRIVATE</label>
             </div>
             <input class="form-text-input login_field" type="text" placeholder="instagram username" name="username" />
@@ -185,7 +281,7 @@
     
     <div id="messagesdiv">
         <p id="messagespara">
-            picking a random winner....
+            
         </p>
     </div>
     

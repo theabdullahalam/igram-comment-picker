@@ -62,6 +62,7 @@
   font-weight: 800;
   font-size: 1.1rem;
   margin-top: 4rem;
+  transition: opacity 0.5s;
   /* Chrome, Safari, Edge, Opera */
   /* Firefox */
 }
@@ -86,6 +87,12 @@
   margin-top: 8px;
   font-weight: 800;
   font-size: 1.1rem;
+  transform-origin: top center;
+  transition: transform 0.15s ease-out, margin-bottom 0.15s ease-out;
+}
+#content #formdiv #theform .form-text-input.hidden {
+  transform: scaleY(0);
+  margin-bottom: -3rem;
 }
 #content #formdiv #theform button {
   width: 100%;
@@ -154,6 +161,17 @@
 #content #messagesdiv p {
   font-size: 2rem;
   font-weight: 800;
+  transition: opacity 0.5s;
+}
+#content #messagesdiv p small {
+  font-size: 1rem;
+  font-weight: normal;
+}
+#content #messagesdiv p a {
+  color: #ece1e1;
+}
+#content #messagesdiv p a:visited {
+  color: #ece1e1;
 }
 
 /*# sourceMappingURL=index.css.map */
