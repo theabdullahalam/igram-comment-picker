@@ -30,7 +30,7 @@
         dim_everything();
 
         // FETCH THE COMMENT
-        var jqxhr = $.post("http://192.168.0.113:8000/pickwinner", $( "#theform" ).serialize(), function (d) {
+        var jqxhr = $.post("http://{{ host }}/pickwinner", $( "#theform" ).serialize(), function (d) {
 
             process_response(d);
 
@@ -263,13 +263,13 @@
             
 
 
-            <!-- login -->
+            <!-- login
             <div class="switchdiv">
                 <input type="checkbox" id="login_checkbox" onclick="update_login()"/>
                 <label class="form-label" for="login_checkbox">MY ACCOUNT IS PRIVATE</label>
             </div>
             <input class="form-text-input login_field" type="text" placeholder="instagram username" name="username" />
-            <input class="form-text-input login_field" type="password" placeholder="instagram password" name="password"/>
+            <input class="form-text-input login_field" type="password" placeholder="instagram password" name="password"/> -->
         
 
 

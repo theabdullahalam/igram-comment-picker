@@ -9,11 +9,19 @@ from django.urls import reverse
 
 from .instagramhelper import InstagramHelper
 
-import time
+import time, os
 
 
 def index(request):
-    return render(request, 'index.html')
+    curr_host = os.environ.get('MAIN_HOST')
+    debug = os.environ.get('DEBUG').lower() == 'true'
+
+    host = curr_host if not debug else curr_host + ':8000'
+
+    context = {
+        'host': host
+    }
+    return render(request, 'index.html', context=context)
 
 def pickwinner(request):
 
@@ -39,35 +47,15 @@ def pickwinner(request):
         else:
             req_mentions = int(req_mentions_str)
 
-
-        # MAKE SURE USERNAME AND PASSWORD ARE BOTH SET IF EITHER ARE SET
-        username = request.POST['username']
-        password = request.POST['password']
-
-        if len(username) > 0 and len(password) == 0:
-            errors.append('NOPASS')
-
-        if len(password) > 0 and len(username) == 0:
-            errors.append('NOUSER')
-            
-
-
+        
         comment_text = ''
         comment_username = ''
+            
 
         if len(errors) == 0:
             # USE IGHELPER
             random_comment = None
             ig_helper  = InstagramHelper()
-
-            # LOGIN IF USERNAME AND PASS ARE SET
-            if len(username) > 0 and len(password) > 0:
-                try:
-                    ig_helper.set_credentials(username, password)
-                except Exception as e:
-                    print(e)
-                    errors.append('NOLOGIN')
-
 
             # FETCH ALL THE COMMENTS
             all_comments = ig_helper.get_all_comments(url=post_link)

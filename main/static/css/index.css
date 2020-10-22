@@ -42,6 +42,7 @@
   #content #formdiv {
     grid-area: form;
     margin-top: 0;
+    height: 90vh;
   }
 }
 #content #formdiv h2 {
@@ -68,7 +69,7 @@
 }
 @media screen and (min-width: 1400px) {
   #content #formdiv #theform {
-    margin-top: 8rem;
+    margin-top: 25vh;
   }
 }
 #content #formdiv #theform .switchdiv {
@@ -107,6 +108,7 @@
 }
 @media screen and (min-width: 1400px) {
   #content #formdiv #theform button {
+    margin-top: 4rem;
     width: 50% !important;
   }
 }

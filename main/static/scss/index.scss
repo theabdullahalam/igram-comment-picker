@@ -59,6 +59,7 @@ $layoutbreakpoint: 1400px;
         @media screen and (min-width: $layoutbreakpoint) {
             grid-area: form;
             margin-top: 0;
+            height: 90vh;
         }
 
         h2{
@@ -84,7 +85,8 @@ $layoutbreakpoint: 1400px;
                 opacity 0.5s;
 
             @media screen and (min-width: $layoutbreakpoint) {
-                margin-top: 8rem;
+                margin-top: 25vh;
+                // place-self: start center;
             }
 
             $placeholdercolor: rgba(255, 255, 255, 0.24);
@@ -143,6 +145,7 @@ $layoutbreakpoint: 1400px;
                 align-self: flex-end;
 
                 @media screen and (min-width: $layoutbreakpoint) {
+                    margin-top: 4rem;
                     width: 50% !important;
                 }                
                 
